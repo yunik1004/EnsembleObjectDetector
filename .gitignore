@@ -130,3 +130,10 @@ dmypy.json
 
 # Editor
 .vscode/
+
+# Data
+checkpoints/
+data/
+
+# Outputs
+outputs/
