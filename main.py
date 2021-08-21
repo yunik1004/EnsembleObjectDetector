@@ -12,80 +12,61 @@ if __name__ == "__main__":
         help="Path of the coco detection config",
     )
     parser.add_argument(
-        "--model1_config",
-        default="configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py",
+        "--model_config",
+        default=[
+            "configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py",
+            "configs/retinanet/retinanet_r50_fpn_1x_coco.py",
+            "configs/rpn/rpn_r50_fpn_1x_coco.py",
+        ],
         type=str,
-        help="Path of the model 1 config",
+        nargs="+",
+        help="List of the path of model configs",
     )
     parser.add_argument(
-        "--model1_checkpoint",
-        default="checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth",
+        "--model_checkpoint",
+        default=[
+            "checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth",
+            "checkpoints/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth",
+            "checkpoints/rpn_r50_fpn_1x_coco_20200218-5525fa2e.pth",
+        ],
         type=str,
-        help="Path of the model 1 checkpoint",
+        nargs="+",
+        help="List of the path of model checkpoints",
     )
     parser.add_argument(
-        "--model1_output",
-        default="outputs/faster_rcnn_r50_fpn_1x_coco.json",
+        "--model_output",
+        default=[
+            "outputs/faster_rcnn_r50_fpn_1x_coco.json",
+            "outputs/retinanet_r50_fpn_1x_coco.json",
+            "outputs/rpn_r50_fpn_1x_coco.json",
+        ],
         type=str,
-        help="Path of the model 1 output",
-    )
-    parser.add_argument(
-        "--model2_config",
-        default="configs/retinanet/retinanet_r50_fpn_1x_coco.py",
-        type=str,
-        help="Path of the model 2 config",
-    )
-    parser.add_argument(
-        "--model2_checkpoint",
-        default="checkpoints/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth",
-        type=str,
-        help="Path of the model 2 checkpoint",
-    )
-    parser.add_argument(
-        "--model2_output",
-        default="outputs/retinanet_r50_fpn_1x_coco.json",
-        type=str,
-        help="Path of the model 2 output",
-    )
-    parser.add_argument(
-        "--model3_config",
-        default="configs/rpn/rpn_r50_fpn_1x_coco.py",
-        type=str,
-        help="Path of the model 3 config",
-    )
-    parser.add_argument(
-        "--model3_checkpoint",
-        default="checkpoints/rpn_r50_fpn_1x_coco_20200218-5525fa2e.pth",
-        type=str,
-        help="Path of the model 3 checkpoint",
-    )
-    parser.add_argument(
-        "--model3_output",
-        default="outputs/rpn_r50_fpn_1x_coco.json",
-        type=str,
-        help="Path of the model 3 output",
+        nargs="+",
+        help="List of the path of model outputs",
     )
     args = parser.parse_args()
+
+    num_model = len(args.model_config)
+    assert (
+        len(args.model_checkpoint) == num_model and len(args.model_output) == num_model
+    )
 
     # Define data loader
     coco_data_loader = gen_data_loader(args.coco_config)
 
     # Define detector models
-    model1_detector = ObjectDetector(
-        args.model1_config, args.model1_checkpoint, args.model1_output, args.device
-    )
-
-    model2_detector = ObjectDetector(
-        args.model2_config, args.model2_checkpoint, args.model2_output, args.device
-    )
-
-    model3_detector = ObjectDetector(
-        args.model3_config, args.model3_checkpoint, args.model3_output, args.device
-    )
+    models = list()
+    for i in range(num_model):
+        detector = ObjectDetector(
+            args.model_config[i],
+            args.model_checkpoint[i],
+            args.model_output[i],
+            args.device,
+        )
+        models.append(detector)
 
     # Define ensemble model
-    ensemble_list = [model1_detector, model2_detector, model3_detector]
-    ensemble_detector = EnsembleObjectDetector(ensemble_list)
+    ensemble_detector = EnsembleObjectDetector(models)
 
     # Inference
     result = ensemble_detector.inference(coco_data_loader)
