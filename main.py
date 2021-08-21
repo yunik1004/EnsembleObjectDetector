@@ -1,5 +1,5 @@
 import argparse
-from dataset import gen_data_loader
+from dataset import gen_val_data_loader
 from detector import EnsembleObjectDetector, ObjectDetector
 
 if __name__ == "__main__":
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     )
 
     # Define data loader
-    coco_data_loader = gen_data_loader(args.coco_config)
+    coco_data_loader = gen_val_data_loader(args.coco_config)
 
     # Define detector models
     models = list()
