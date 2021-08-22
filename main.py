@@ -37,9 +37,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model_output",
         default=[
-            "outputs/faster_rcnn_r50_fpn_1x_coco.json",
-            "outputs/retinanet_r50_fpn_1x_coco.json",
-            "outputs/rpn_r50_fpn_1x_coco.json",
+            "outputs/faster_rcnn_r50_fpn_1x_coco.pkl",
+            "outputs/retinanet_r50_fpn_1x_coco.pkl",
+            "outputs/rpn_r50_fpn_1x_coco.pkl",
         ],
         type=str,
         nargs="+",
@@ -70,4 +70,13 @@ if __name__ == "__main__":
     ensemble_detector = EnsembleObjectDetector(models)
 
     # Inference
-    result = ensemble_detector.inference(data.data_loader)
+    sub_results, ensemble_results = ensemble_detector.inference(data.data_loader)
+
+    # Print evaluation metrics of submodels
+    for i in range(num_model):
+        mAP = data.evaluate(sub_results[i])
+        print(f"\n>> mAP of Model {i} : {mAP * 100}\n")
+
+    # Print evaluation metrics of ensemble model
+    ensemble_mAP = data.evaluate(ensemble_results)
+    print(f"\n>> mAP of Ensemble Model : {ensemble_mAP * 100}\n")

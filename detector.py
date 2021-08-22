@@ -1,5 +1,5 @@
 import os
-from typing import Any, List
+from typing import Any, List, Tuple
 from mmdet.apis import init_detector, single_gpu_test
 from mmcv.fileio import dump, load
 from mmcv.parallel import MMDataParallel
@@ -41,7 +41,7 @@ class ObjectDetector:
 
         self._output_path = output_path
 
-    def inference(self, data_loader) -> List[Any]:
+    def inference(self, data_loader) -> List[List[Any]]:
         """
         Returns the list of inference results for the given data loader.
         It also saves the results into the output file.
@@ -53,8 +53,8 @@ class ObjectDetector:
 
         Returns
         -------
-        List[Any]
-            List of inference results
+        List[List[torch.Tensor]]
+            Inference results
         """
         if os.path.isfile(self._output_path):
             result = load(self._output_path)
@@ -82,10 +82,9 @@ class EnsembleObjectDetector:
         """
         self._detectors = detectors
 
-    def inference(self, data_loader) -> List[Any]:
+    def inference(self, data_loader) -> Tuple[List[List[List[Any]]], List[List[Any]]]:
         """
-        Return the inference results.
-        It also saves the results into the output file.
+        Return the inference results for the given data loader.
 
         Parameters
         ----------
@@ -94,12 +93,16 @@ class EnsembleObjectDetector:
 
         Returns
         -------
-        List[Any]
-            List of ensemble inference results
+        Tuple[List[List[List[torch.Tensor]]], List[List[torch.Tensor]]
+            First element: List of submodel results
+            Second element: Ensemble inference results
         """
-        results = list()
+        sub_results = list()
         for detector in self._detectors:
             result = detector.inference(data_loader)
-            results.append(result)
+            sub_results.append(result)
 
-        return results
+        # TODO : Generate ensemble results
+        ensemble_results = sub_results[0]
+
+        return sub_results, ensemble_results

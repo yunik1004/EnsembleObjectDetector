@@ -1,3 +1,4 @@
+from typing import Any, List
 from mmcv import Config
 from mmdet.datasets import build_dataloader, build_dataset
 
@@ -40,3 +41,20 @@ class CocoValData:
             Pytorch dataloader
         """
         return self._data_loader
+
+    def evaluate(self, results: List[List[Any]]) -> float:
+        """
+        Evaluate the testing results.
+
+        Parameters
+        ----------
+        results : List[List[torch.Tensor]]
+            Testing results of the dataset
+
+        Returns
+        -------
+        float
+            Evaluated mAP
+        """
+        result = self._dataset.evaluate(results)
+        return result["bbox_mAP"]
