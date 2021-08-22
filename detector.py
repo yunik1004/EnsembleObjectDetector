@@ -62,6 +62,22 @@ class ObjectDetector:
             result = load(self._output_path)
         else:
             result = single_gpu_test(self._model, data_loader)
+
+            # Fix the reversed results (X1 > X2 or Y1 > Y2)
+            for box_data in result:
+                for box_class in box_data:
+                    for b in range(box_class.shape[0]):
+                        if box_class[b][0] > box_class[b][2]:
+                            box_class[b][0], box_class[b][2] = (
+                                box_class[b][2],
+                                box_class[b][0],
+                            )
+                        if box_class[b][1] > box_class[b][3]:
+                            box_class[b][1], box_class[b][3] = (
+                                box_class[b][3],
+                                box_class[b][1],
+                            )
+
             dump(result, self._output_path)
 
         return result
