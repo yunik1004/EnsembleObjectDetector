@@ -1,4 +1,3 @@
-from typing import Any, List
 from mmcv import Config
 from mmdet.datasets import build_dataloader, build_dataset
 
@@ -42,7 +41,7 @@ class CocoValData:
         """
         return self._data_loader
 
-    def evaluate(self, results: List[List[Any]]) -> float:
+    def evaluate(self, results) -> float:
         """
         Evaluate the testing results.
 
