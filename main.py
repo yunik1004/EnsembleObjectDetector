@@ -1,6 +1,7 @@
 import argparse
-from dataset import gen_val_data_loader
+from dataset import CocoValData
 from detector import EnsembleObjectDetector, ObjectDetector
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ensemble object detector")
@@ -51,8 +52,8 @@ if __name__ == "__main__":
         len(args.model_checkpoint) == num_model and len(args.model_output) == num_model
     )
 
-    # Define data loader
-    coco_data_loader = gen_val_data_loader(args.coco_config)
+    # Define COCO data
+    data = CocoValData(args.coco_config)
 
     # Define detector models
     models = list()
@@ -69,4 +70,4 @@ if __name__ == "__main__":
     ensemble_detector = EnsembleObjectDetector(models)
 
     # Inference
-    result = ensemble_detector.inference(coco_data_loader)
+    result = ensemble_detector.inference(data.data_loader)

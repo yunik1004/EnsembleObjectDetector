@@ -4,28 +4,39 @@ from mmdet.datasets import build_dataloader, build_dataset
 # from mmdet.datasets.coco import CocoDataset
 
 
-def gen_val_data_loader(config_path: str):
+class CocoValData:
     """
-    Generates the validation dataloader from the config.
-
-    Parameters
-    ----------
-    config_path : str
-        Path of the config
-
-    Returns
-    -------
-    DataLoader
-        Pytorch dataloader
+    Class for treating the COCO style validation dataset
     """
-    cfg = Config.fromfile(config_path)
-    dataset = build_dataset(cfg.data.val)
-    data_loader = build_dataloader(
-        dataset,
-        samples_per_gpu=1,
-        workers_per_gpu=cfg.data.workers_per_gpu,
-        dist=False,
-        shuffle=False,
-    )
 
-    return data_loader
+    def __init__(self, config_path: str) -> None:
+        """
+        Constructor of CocoValData class.
+        It generates the validation dataset and its dataloader.
+
+        Parameters
+        ----------
+        config_path : str
+            Path of the COCO style config
+        """
+        cfg = Config.fromfile(config_path)
+        self._dataset = build_dataset(cfg.data.val)
+        self._data_loader = build_dataloader(
+            self._dataset,
+            samples_per_gpu=1,
+            workers_per_gpu=cfg.data.workers_per_gpu,
+            dist=False,
+            shuffle=False,
+        )
+
+    @property
+    def data_loader(self):
+        """
+        Getter of the attribute 'data_loader'
+
+        Returns
+        -------
+        DataLoader
+            Pytorch dataloader
+        """
+        return self._data_loader
