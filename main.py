@@ -17,7 +17,7 @@ if __name__ == "__main__":
         default=[
             "configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py",
             "configs/retinanet/retinanet_r50_fpn_1x_coco.py",
-            "configs/rpn/rpn_r50_fpn_1x_coco.py",
+            "configs/sabl/sabl_retinanet_r50_fpn_1x_coco.py",
         ],
         type=str,
         nargs="+",
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         default=[
             "checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth",
             "checkpoints/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth",
-            "checkpoints/rpn_r50_fpn_1x_coco_20200218-5525fa2e.pth",
+            "checkpoints/sabl_retinanet_r50_fpn_1x_coco-6c54fd4f.pth",
         ],
         type=str,
         nargs="+",
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         default=[
             "outputs/faster_rcnn_r50_fpn_1x_coco.pkl",
             "outputs/retinanet_r50_fpn_1x_coco.pkl",
-            "outputs/rpn_r50_fpn_1x_coco.pkl",
+            "outputs/sabl_retinanet_r50_fpn_1x_coco.pkl",
         ],
         type=str,
         nargs="+",
@@ -74,9 +74,9 @@ if __name__ == "__main__":
 
     # Print evaluation metrics of submodels
     for i in range(num_model):
-        mAP = data.evaluate(sub_results[i])
-        print(f"\n>> mAP of Model {i} : {mAP * 100}\n")
+        bboxAP = data.evaluate(sub_results[i])
+        print(f"\n>> box AP of Model {i} : {bboxAP * 100}\n")
 
     # Print evaluation metrics of ensemble model
-    ensemble_mAP = data.evaluate(ensemble_results)
-    print(f"\n>> mAP of Ensemble Model : {ensemble_mAP * 100}\n")
+    ensemble_bboxAP = data.evaluate(ensemble_results)
+    print(f"\n>> box AP of Ensemble Model : {ensemble_bboxAP * 100}\n")
