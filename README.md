@@ -9,6 +9,7 @@ Ensemble object detector using
 
 ## Dependencies
 
+- [Numpy](https://numpy.org/)==1.20.3
 - [PyTorch](https://pytorch.org/)==1.9.0
 - [MMDetection](https://github.com/open-mmlab/mmdetection)==2.11.0
 - [MMCV](https://github.com/open-mmlab/mmcv)==1.3.11
