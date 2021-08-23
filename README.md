@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Ensemble object detector using Weighted Boxes Fusion (WBF) algorithm.
+Ensemble object detector using
+[Weighted Boxes Fusion (WBF)](https://arxiv.org/pdf/1910.13302.pdf) algorithm.
 
 ![model](image/model.png)
 
@@ -36,11 +37,11 @@ optional arguments:
 
 The object detection models that I used for the test are listed below.
 
-| Name           | Backbone | Lr schd | GN  |                                                                    Model FIle                                                                     |                                       Source                                       |
-| -------------- | :------: | :-----: | :-: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
-| Faster-RCNN    | R-50-FPN |   1x    |     | [Link](https://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth) | [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/faster_rcnn) |
-| RetinaNet      | R-50-FPN |   1x    |     |    [Link](https://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth)    |  [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/retinanet)  |
-| SABL RetinaNet | R-50-FPN |   1x    |  N  |      [Link](http://download.openmmlab.com/mmdetection/v2.0/sabl/sabl_retinanet_r50_fpn_1x_coco/sabl_retinanet_r50_fpn_1x_coco-6c54fd4f.pth)       |    [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/sabl)     |
+| Name                                                   | Backbone | Lr schd | GN  |                                                                    Model FIle                                                                     |                                       Source                                       |
+| ------------------------------------------------------ | :------: | :-----: | :-: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
+| [Faster-RCNN](https://arxiv.org/pdf/1506.01497.pdf)    | R-50-FPN |   1x    |     | [Link](https://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth) | [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/faster_rcnn) |
+| [RetinaNet](https://arxiv.org/pdf/1708.02002.pdf)      | R-50-FPN |   1x    |     |    [Link](https://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth)    |  [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/retinanet)  |
+| [SABL RetinaNet](https://arxiv.org/pdf/1912.04260.pdf) | R-50-FPN |   1x    |  N  |      [Link](http://download.openmmlab.com/mmdetection/v2.0/sabl/sabl_retinanet_r50_fpn_1x_coco/sabl_retinanet_r50_fpn_1x_coco-6c54fd4f.pth)       |    [Link](https://github.com/open-mmlab/mmdetection/tree/v2.11.0/configs/sabl)     |
 
 The dataset that I used for the test is
 [COCO Val Images 2017](https://cocodataset.org/#download).
@@ -54,7 +55,7 @@ To test my project,
    'pkl' format.
 4. Run 'python main.py'
 
-For easy to understand, contents of my project directory is as follows:
+For easy to understand, contents of my project directory are as follows:
 
 ```text
 .
